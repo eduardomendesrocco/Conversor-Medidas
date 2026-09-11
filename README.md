@@ -10,13 +10,12 @@ Um conversor de unidades de medida feito em Python, via linha de comando. O prog
 - [x] Massa
 - [x] Volume
 - [x] Tempo
-- [ ] Temperatura
-- [ ] Área
-- [ ] Velocidade
-- [ ] Dados digitais
-- [ ] Energia
-- [ ] Porcentagem
-- [ ] Ângulo
+- [x] Temperatura
+- [x] Área
+- [x] Velocidade
+- [x] Dados digitais
+- [x] Energia
+- [x] Ângulo
 - [ ] Moeda *(planejado para o futuro)*
 
 ## 🛠️ Tecnologias
