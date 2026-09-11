@@ -44,4 +44,4 @@ python main.py
 
 ## 👤 Autor
 
-Projeto pessoal desenvolvido por Duzz.
+Projeto pessoal desenvolvido por Eduardo Mendes Rocco.
