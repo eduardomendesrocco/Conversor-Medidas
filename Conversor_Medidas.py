@@ -9,7 +9,6 @@ acceptMeasures = ["comprimento",
                   "tempo",
                   "dados_digitais",
                   "energia",
-                  "porcentagem",
                   "angulo"]
 
 fatores_comprimento = {
@@ -95,22 +94,31 @@ fatores_angulo = {
     "arcossegundo": math.pi/648000, "asec": math.pi/648000
 }
 
-def main():
+print(f"========================\n"
+      f"|     Comprimento      |\n"
+      f"|     Massa            |\n"
+      f"|     Volume           |\n"
+      f"|     Temperatura      |\n"
+      f"|     Área             |\n"
+      f"|     Velocidade       |\n"
+      f"|     Tempo            |\n"
+      f"|     Dados_digitais   |\n"
+      f"|     Energia          |\n"
+      f"|     Ângulo           |\n"
+      f"| [x] Moeda (em breve) |\n"
+      f"========================\n")
 
-    print(f"========================\n"
-          f"|     Comprimento      |\n"
-          f"|     Massa            |\n"
-          f"|     Volume           |\n"
-          f"|     Temperatura      |\n"
-          f"|     Área             |\n"
-          f"|     Velocidade       |\n"
-          f"|     Tempo            |\n"
-          f"|     Dados_digitais   |\n"
-          f"|     Energia          |\n"
-          f"|     Porcentagem      |\n"
-          f"|     Ângulo           |\n"
-          f"| [x] Moeda (em breve) |\n"
-          f"========================\n")
+print(f"Níveis de precisão -> | Alto | Medio | Baixo |")
+nivel_precisao = input(f"Qual será o nível de precisão dos resultados? (Irá alterar levemente os valores): ")
+
+if nivel_precisao.lower() == "alto":
+    num_precisao = 10
+elif nivel_precisao.lower() == "medio":
+    num_precisao = 6
+elif nivel_precisao.lower() == "baixo":
+    num_precisao = 1
+
+def main():
 
     measureType = input("Digite uma categoria de medida acima desejada (sem acentos e utilize _ invés de espaços): ")
     while measureType.lower() not in acceptMeasures:
@@ -130,41 +138,132 @@ def main():
               f"               {converter_comprimento(valor_numerico, initial_measure, final_measure)}")
 
     if measureType.lower() == acceptMeasures[1]:
-        converter_massa()
+        print(f"               Medida utilizada: {measureType}\n"
+              f"               Valor original ({initial_measure}): {valor_numerico}\n"
+              f"               {converter_massa(valor_numerico, initial_measure, final_measure)}")
 
     if measureType.lower() == acceptMeasures[2]:
-        converter_volume()
+        print(f"               Medida utilizada: {measureType}\n"
+              f"               Valor original ({initial_measure}): {valor_numerico}\n"
+              f"               {converter_volume(valor_numerico, initial_measure, final_measure)}")
+
+    temperatura_aceita = ["celsius", "c", "fahrenheit", "f", "kelvin", "k"]
 
     if measureType.lower() == acceptMeasures[3]:
-        converter_temperatura()
+
+        resultado = valor_numerico
+        if initial_measure in temperatura_aceita and final_measure in temperatura_aceita:
+
+            if initial_measure.lower() in ("celsius", "c"):
+                if final_measure.lower() in ("fahrenheit", "f"):
+                    resultado = (valor_numerico * 9/5) + 32
+                elif final_measure.lower() in ("kelvin", "k"):
+                    resultado = valor_numerico + 273.15
+
+            elif initial_measure.lower() in ("fahrenheit", "f"):
+                if final_measure.lower() in ("celsius", "c"):
+                    resultado = (valor_numerico - 32) * 5/9
+                elif final_measure.lower() in ("kelvin", "k"):
+                    resultado = (valor_numerico - 32) * 5/9 + 273.15
+
+            elif initial_measure.lower() in ("kelvin", "k"):
+                if final_measure.lower() in ("celsius", "c"):
+                    resultado = valor_numerico - 273.15
+                elif final_measure.lower() in ("fahrenheit", "f"):
+                    resultado = (valor_numerico - 273.15) * 9/5 + 32
+
+            print(f"               Medida utilizada: {measureType}\n"
+                  f"               Valor original ({initial_measure}): {valor_numerico}\n"
+                  f"               Valor final ({final_measure}): {resultado:.{num_precisao}f}")
+
+
 
     if measureType.lower() == acceptMeasures[4]:
-        converter_area()
+        print(f"               Medida utilizada: {measureType}\n"
+              f"               Valor original ({initial_measure}): {valor_numerico}\n"
+              f"               {converter_area(valor_numerico, initial_measure, final_measure)}")
 
     if measureType.lower() == acceptMeasures[5]:
-        converter_velocidade()
+        print(f"               Medida utilizada: {measureType}\n"
+              f"               Valor original ({initial_measure}): {valor_numerico}\n"
+              f"               {converter_velocidade(valor_numerico, initial_measure, final_measure)}")
 
     if measureType.lower() == acceptMeasures[6]:
-        converter_tempo()
+        print(f"               Medida utilizada: {measureType}\n"
+              f"               Valor original ({initial_measure}): {valor_numerico}\n"
+              f"               {converter_tempo(valor_numerico, initial_measure, final_measure)}")
 
     if measureType.lower() == acceptMeasures[7]:
-        converter_dados_digitais()
+        print(f"               Medida utilizada: {measureType}\n"
+              f"               Valor original ({initial_measure}): {valor_numerico}\n"
+              f"               {converter_dados_digitais(valor_numerico, initial_measure, final_measure)}")
 
     if measureType.lower() == acceptMeasures[8]:
-        converter_energia()
+        print(f"               Medida utilizada: {measureType}\n"
+              f"               Valor original ({initial_measure}): {valor_numerico}\n"
+              f"               {converter_energia(valor_numerico, initial_measure, final_measure)}")
 
     if measureType.lower() == acceptMeasures[9]:
-        converter_porcentagem()
+        print(f"               Medida utilizada: {measureType}\n"
+              f"               Valor original ({initial_measure}): {valor_numerico}\n"
+              f"               {converter_angulo(valor_numerico, initial_measure, final_measure)}")
 
-    if measureType.lower() == acceptMeasures[10]:
-        converter_angulo()
+# ===============================================================================================
 
 def converter_comprimento(valor, unidade_inicial, unidade_final):
-
     valor_metros = valor * fatores_comprimento[unidade_inicial]
     resultado = valor_metros / fatores_comprimento[unidade_final]
 
-    return f"Valor final ({unidade_final}): {resultado}"
+    return f"Valor final ({unidade_final}): {resultado:.{num_precisao}f}"
 
+def converter_massa(valor, unidade_inicial, unidade_final):
+    valor_gramas = valor * fatores_massa[unidade_inicial]
+    resultado = valor_gramas / fatores_massa[unidade_final]
+
+    return f"Valor final ({unidade_final}): {resultado:.{num_precisao}f}"
+
+def converter_volume(valor, unidade_inicial, unidade_final):
+    valor_litros = valor * fatores_massa[unidade_inicial]
+    resultado = valor_litros / fatores_massa[unidade_final]
+
+    return f"Valor final ({unidade_final}): {resultado:.{num_precisao}f}"
+
+def converter_area(valor, unidade_inicial, unidade_final):
+    valor_m2 = valor * fatores_area[unidade_inicial]
+    resultado = valor_m2 / fatores_area[unidade_final]
+
+    return f"Valor final ({unidade_final}): {resultado:.{num_precisao}f}"
+
+def converter_velocidade(valor, unidade_inicial, unidade_final):
+    valor_ms = valor * fatores_velocidade[unidade_inicial]
+    resultado = valor_ms / fatores_velocidade[unidade_final]
+
+    return f"Valor final ({unidade_final}): {resultado:.{num_precisao}f}"
+
+def converter_tempo(valor, unidade_inicial, unidade_final):
+    valor_horas = valor * fatores_tempo[unidade_inicial]
+    resultado = valor_horas / fatores_tempo[unidade_final]
+
+    return f"Valor final ({unidade_final}): {resultado:.{num_precisao}f}"
+
+def converter_dados_digitais(valor, unidade_inicial, unidade_final):
+    valor_bytes = valor * fatores_dados_digitais[unidade_inicial]
+    resultado = valor_bytes / fatores_dados_digitais[unidade_final]
+
+    return f"Valor final ({unidade_final}): {resultado:.{num_precisao}f}"
+
+def converter_energia(valor, unidade_inicial, unidade_final):
+    valor_joules = valor * fatores_energia[unidade_inicial]
+    resultado = valor_joules / fatores_energia[unidade_final]
+
+    return f"Valor final ({unidade_final}): {resultado:.{num_precisao}f}"
+
+def converter_angulo(valor, unidade_inicial, unidade_final):
+    valor_radianos = valor * fatores_angulo[unidade_inicial]
+    resultado = valor_radianos / fatores_angulo[unidade_final]
+
+    return f"Valor final ({unidade_final}): {resultado:.{num_precisao}f}"
+
+# ===============================================================================================
 if __name__ == '__main__':
     main()
